@@ -127,27 +127,6 @@ class MatchingPennies:
         if self.v2() > self.v2_best():
             factor2 = self.factor_min
         return factor1, factor2
-    
-    def step(self):    
-        a = random.random()
-        b = random.random()
-        va, vb = 0, 0
-        if a <= self.alpha:
-            va = 0
-        else:
-            va = 1
-        if b <= self.beta:
-            vb = 0
-        else:
-            vb = 1
-        if va + vb == 0:
-            return True
-        if va + vb == 2:
-            return True
-        return False 
-
-    def derivate(self):
-        return 
 
     def update(self):
         epsilon = 1e-6
