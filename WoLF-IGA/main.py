@@ -61,30 +61,22 @@ class MatchingPennies:
         self.init_draw()
 
     def init_p1(self):
-        # self.r11 = 3.0
-        # self.r12 = -2.0
-        # self.r21 = -2.0
-        # self.r22 = 1.0
-        self.r11 = 1.0
-        self.r12 = -1.0
-        self.r21 = -1.0
+        self.r11 = 3.0
+        self.r12 = -2.0
+        self.r21 = -2.0
         self.r22 = 1.0
         self.u1 = self.r11 - self.r12 - self.r21 + self.r22
         self.alpha = random.random()
-        self.alpha_best = 0.5
+        self.alpha_best = 3/8
     
     def init_p2(self):
-        # self.c11 = -3.0
-        # self.c12 = 2.0
-        # self.c21 = 2.0
-        # self.c22 = -1.0
-        self.c11 = -1.0
-        self.c12 = 1.0
-        self.c21 = 1.0
+        self.c11 = -3.0
+        self.c12 = 2.0
+        self.c21 = 2.0
         self.c22 = -1.0
         self.u2 = self.c11 - self.c12 - self.c21 + self.c22
         self.beta = random.random()
-        self.beta_best = 0.5
+        self.beta_best = 3/8
     
     def init_draw(self):
         self.x = []
