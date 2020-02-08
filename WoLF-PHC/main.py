@@ -9,9 +9,11 @@ class Player:
     def __init__(self, q, strategy=[0.5, 0.5], learn=True):
         self.q = [0 for _ in range(len(strategy))]
         self.strategy = strategy
+        self.equilibrium_strategy = [1/len(self.strategy) for _ in range(len(self.strategy))]
         self.turns = 0
         self.gamma = 0.9
-        self.delta = 0.01
+        self.delta_win = 0.0
+        self.delta_lose = 2 * self.delta_win
         self.learn = learn
 
     def action(self):
@@ -56,10 +58,18 @@ class Player:
         if self.learn:
             self.update_value(reward)
             self.update_strategy()
+            self.udpate_equilibrium_strategy()
             self.turns += 1
 
     def update_value(self, reward):
         self.q[self.current_action] = (1-self.learning_rate()) * self.q[self.current_action] + self.learning_rate() * (reward + self.gamma * np.max(self.q))
+
+    def get_delta(self):
+        self.delta_win = 1.0 / (1000 + self.turns)
+        self.delta_lose = 2.0 * self.delta_win
+        if np.sum(np.dot(self.strategy, self.q)) > np.sum(np.dot(self.equilibrium_strategy, self.q)):
+            return self.delta_win
+        return self.delta_lose
 
     def update_strategy(self):
         best_action = np.argmax(self.q)
@@ -67,12 +77,15 @@ class Player:
         idx = 0
         for i in range(len(self.strategy)):
             if i != best_action:
-                a = min(self.strategy[i], self.delta/(len(self.strategy)-1))
+                a = min(self.strategy[i], self.get_delta()/(len(self.strategy)-1))
                 self.strategy[i] += -a
                 s += a
             else:
                 idx = i
         self.strategy[idx] += s
+
+    def udpate_equilibrium_strategy(self):
+        self.equilibrium_strategy[self.current_action] += 1/(self.turns+1) * (self.strategy[self.current_action] - self.equilibrium_strategy[self.current_action])
             
     
 class PHC:
@@ -118,9 +131,16 @@ class PHC:
 
 def ALearningBFix():
     p1 = Player(q=[0.0, 0.0], strategy=[0.2, 0.8], learn=True)
-    p2 = Player(q=[0.0, 0.0], strategy=[0.5, 0.5], learn=False)
+    p2 = Player(q=[0.0, 0.0], strategy=[1.0, 0.0], learn=False)
     phc = PHC('A_learn_B_fix', p1, p2, 10000)
+    phc.run()
+
+def ALearningBFix1():
+    p1 = Player(q=[0.0, 0.0], strategy=[0.2, 0.8], learn=True)
+    p2 = Player(q=[0.0, 0.0], strategy=[0.2, 0.8], learn=False)
+    phc = PHC('A_learn_B_fix1', p1, p2, 10000)
     phc.run()
 
 if __name__ == "__main__":
     ALearningBFix()
+    ALearningBFix1()
