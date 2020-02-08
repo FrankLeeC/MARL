@@ -67,7 +67,8 @@ class MatchingPennies:
         self.r22 = 1.0
         self.u1 = self.r11 - self.r12 - self.r21 + self.r22
         self.alpha = random.random()
-        self.alpha_best = 3/8
+        # self.alpha_best = 3/8
+        self.alpha_best = random.random()
     
     def init_p2(self):
         self.c11 = -3.0
