@@ -42,11 +42,9 @@ class Player:
 
     def learning_rate(self):
         return 1/(10+0.00001*self.turns)
-        # return 0.1
 
     def epsilon(self):
         return 0.5/(1+0.0001*self.turns)
-        # return 0.5
 
     def get_strategy(self, i):
         return self.strategy[i]
@@ -136,8 +134,14 @@ def ALearningBFix2():
     phc = PHC('A_learn_B_fix2', p1, p2, 300)
     phc.run()
 
+def ALearningBFix3():
+    p1 = Player(q=[0.0, 0.0], strategy=[0.8, 0.2], learn=True)
+    p2 = Player(q=[0.0, 0.0], strategy=[0.5, 0.5], learn=False)
+    phc = PHC('A_learn_B_fix3', p1, p2, 10000)
+    phc.run()
 
 if __name__ == "__main__":
     ALearningBLearning()
     ALearningBFix()
     ALearningBFix2()
+    ALearningBFix3()
